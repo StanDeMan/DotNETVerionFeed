@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Runtime.Serialization;
-using DotNETVersionFeed.VersionParser.Architecture;
 using DotNETVersionFeed.VersionParser.Extensions;
+using DotNETVersionFeed.VersionParser.Models;
 using HtmlAgilityPack;
 using Version = DotNETVersionFeed.VersionParser.Architecture.Version;
 
@@ -64,12 +64,12 @@ namespace DotNETVersionFeed.VersionParser
         /// <param name="version">Search for this .NET version</param>
         /// <param name="architecture">Search for this architecture/bitness</param>
         /// <returns>List of partially version download uris</returns>
-        public async Task<List<string>> ReadDownloadPagesAsync(Version version, Sdk architecture)
+        public async Task<List<string>> ReadDownloadPagesAsync(Version version, SdkArchitecture architecture)
         {
             // Get ARM bitness architecture for SDK
-            var sdk = architecture == Sdk.Arm32 
-                ? Sdk.Arm32.GetAttributeOfType<EnumMemberAttribute>().Value 
-                : Sdk.Arm64.GetAttributeOfType<EnumMemberAttribute>().Value;
+            var sdk = architecture == SdkArchitecture.Arm32 
+                ? SdkArchitecture.Arm32.GetAttributeOfType<EnumMemberAttribute>().Value 
+                : SdkArchitecture.Arm64.GetAttributeOfType<EnumMemberAttribute>().Value;
 
             // Get .NET main version: 3.1/5.0/6.0/etc.
             var actual = version.GetAttributeOfType<EnumMemberAttribute>().Value;
@@ -110,7 +110,7 @@ namespace DotNETVersionFeed.VersionParser
         /// <param name="version">Search for this .NET version</param>
         /// <param name="architecture">Search for this architecture/bitness</param>
         /// <returns>Partial version download uri</returns>
-        public async Task<string> ReadActualDownloadPageAsync(Version version, Sdk architecture)
+        public async Task<string> ReadActualDownloadPageAsync(Version version, SdkArchitecture architecture)
         {
             var pages =  await ReadDownloadPagesAsync(version, architecture);
 
@@ -124,7 +124,7 @@ namespace DotNETVersionFeed.VersionParser
         /// <param name="specificVersion">Search for this .NET SDK version</param>
         /// <param name="architecture">Search for this architecture/bitness</param>
         /// <returns>Partial version download uri</returns>
-        public async Task<string> ReadDownloadPageForVersionAsync(Version version, string specificVersion, Sdk architecture)
+        public async Task<string> ReadDownloadPageForVersionAsync(Version version, string specificVersion, SdkArchitecture architecture)
         {
             var pages = await ReadDownloadPagesAsync(version, architecture);
 

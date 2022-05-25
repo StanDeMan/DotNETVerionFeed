@@ -7,6 +7,6 @@ namespace DotNETVersionFeed.VersionParser.Models
     {
         public Version Version { get; set; }
 
-        public Sdk Family { get; set; }
+        public SdkArchitecture Family { get; set; }
     }
 }
