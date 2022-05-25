@@ -1,4 +1,4 @@
-namespace DotNETVerionFeed
+namespace DotNETVersionFeed
 {
     public class Program
     {

@@ -1,4 +1,4 @@
-namespace DotNETVerionFeed.Models
+namespace DotNETVersionFeed.Models
 {
     public class WeatherForecast
     {

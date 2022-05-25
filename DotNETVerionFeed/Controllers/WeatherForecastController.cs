@@ -1,4 +1,4 @@
-using DotNETVerionFeed.Models;
+using DotNETVersionFeed.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNETVersionFeed.Controllers
