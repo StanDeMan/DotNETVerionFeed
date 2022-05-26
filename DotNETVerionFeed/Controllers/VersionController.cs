@@ -5,6 +5,7 @@ using DotNETVersionFeed.VersionParser.Extensions;
 using DotNETVersionFeed.VersionParser.Models;
 using DotNETVersionFeed.VersionParser.Sdk;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using Platform = DotNETVersionFeed.VersionParser.Models.Platform;
 
@@ -14,23 +15,29 @@ namespace DotNETVersionFeed.Controllers
     [Route("[controller]")]
     public class VersionController : Controller
     {
+        private const string SdkCatalogKey = "SdkCatalogKey";
         private static SdkCatalog _cachedSdkCatalog = null!;
         private static SdkScrapingCatalog? _cachedSdkScrapingCatalog;
 
         // ReSharper disable once NotAccessedField.Local
         private readonly ILogger<VersionController> _logger;
+        private readonly IMemoryCache _cache;
 
-        public VersionController(ILogger<VersionController> logger)
+        public VersionController(ILogger<VersionController> logger, IMemoryCache memoryCache)
         {
             _logger = logger;
+            _cache = memoryCache;
+
+            if (_cache.TryGetValue(SdkCatalogKey, out _cachedSdkCatalog)) return;
+
             _cachedSdkCatalog = new SdkCatalog();
+            _cache.Set(SdkCatalogKey, _cachedSdkCatalog, new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromHours(6)));
         }
 
         [HttpGet(Name = "Version")]
         public async Task<SdkCatalog?> Get()
         {
-            var ok = false;
-
             if (_cachedSdkCatalog.Items.Any()) return _cachedSdkCatalog;
 
             try
@@ -57,17 +64,18 @@ namespace DotNETVersionFeed.Controllers
 
                 var rawLinkCatalog = await scrapeHtml.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
 
-                ok = FillCachedSdkCatalog(rawLinkCatalog);
+                var ok = FillCachedSdkCatalog(rawLinkCatalog);
 
+                _cache.Set(SdkCatalogKey, ok 
+                    ? _cachedSdkCatalog 
+                    : new SdkCatalog());
             }
             catch (Exception e)
             {
                 _logger.LogError($"GET/version: {e}");
             }
 
-            return ok 
-                ? _cachedSdkCatalog 
-                : new SdkCatalog();
+            return _cache.Get<SdkCatalog>(SdkCatalogKey);
         }
 
         /// <summary>

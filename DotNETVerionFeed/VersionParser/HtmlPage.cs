@@ -33,7 +33,7 @@ namespace DotNETVersionFeed.VersionParser
         /// <summary>
         /// Constructor 
         /// </summary>
-        public HtmlPage(string baseUri)
+        private HtmlPage(string baseUri)
         {
             Web = new HtmlWeb();
 
@@ -136,7 +136,7 @@ namespace DotNETVersionFeed.VersionParser
         /// </summary>
         /// <param name="uri">Uri to download SDK page</param>
         /// <returns>Download SDK uri and checksum</returns>
-        public async Task<(string downLoadLink, string checkSum)> ReadDownloadUriAndChecksumAsync(string uri)
+        private async Task<(string downLoadLink, string checkSum)> ReadDownloadUriAndChecksumAsync(string uri)
         {
             // load page content from uri
             var htmlPage = await new HtmlPage(BaseUri).LoadAsync($"{uri}");
@@ -164,7 +164,8 @@ namespace DotNETVersionFeed.VersionParser
             return Task.WhenAll(uris
                 .SelectMany(sdkArea => sdkArea)
                 .Select(downloadPageLink => Task.Run(async () => 
-                    await page.ReadDownloadUriAndChecksumAsync(downloadPageLink))));
+                    await page.ReadDownloadUriAndChecksumAsync(downloadPageLink)))
+                .AsParallel());
         }
     }
 }
