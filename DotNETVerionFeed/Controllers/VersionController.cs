@@ -1,13 +1,12 @@
-﻿using System.Reflection;
-using System.Runtime.Serialization;
+﻿using Newtonsoft.Json;
+using System.Reflection;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+
 using DotNETVersionFeed.VersionParser;
 using DotNETVersionFeed.VersionParser.Extensions;
 using DotNETVersionFeed.VersionParser.Models;
 using DotNETVersionFeed.VersionParser.Sdk;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json;
-using Platform = DotNETVersionFeed.VersionParser.Models.Platform;
 
 namespace DotNETVersionFeed.Controllers
 {
@@ -94,9 +93,9 @@ namespace DotNETVersionFeed.Controllers
                 // fill to cached catalog
                 _cachedSdkCatalog?.Items.Add(new SdkCatalogItem(
                     $"{dotNetPart[2].Split('.')[0]}.{dotNetPart[2].Split('.')[1]}",     // extract belonging SDK version
-                    dotNetPart[4].Contains(Platform.Bitness64.GetAttributeOfType<EnumMemberAttribute>().Value ?? "64")         // read SDK architecture    
-                        ? SdkArchitecture.Arm64                                                     
-                        : SdkArchitecture.Arm32,
+                    dotNetPart[4].Contains(Platform.Bitness64.ToMemberString())         // read SDK architecture    
+                        ? SdkArchitecture.Arm64.ToMemberString()                                                     
+                        : SdkArchitecture.Arm32.ToMemberString(),
                     downLoadLink,
                     checkSum));
             }

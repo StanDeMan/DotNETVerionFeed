@@ -21,6 +21,7 @@ namespace DotNETVersionFeed.VersionParser.Models
     /// <summary>
     /// Enumerates the supported ARM architectures.
     /// </summary>
+    [DataContract]
     public enum SdkArchitecture
     {
         /// <summary>
@@ -45,6 +46,7 @@ namespace DotNETVersionFeed.VersionParser.Models
     /// <summary>
     /// Enumerates the supported architecture bitness.
     /// </summary>
+    [DataContract]
     public enum Platform
     {
         /// <summary>

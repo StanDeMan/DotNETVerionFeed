@@ -35,7 +35,7 @@ namespace DotNETVersionFeed.VersionParser.Sdk
         /// Specifies the 32-bit or 64-bit version of the SDK.
         /// </summary>
         [JsonProperty(PropertyName = "Architecture", Required = Required.Always)]
-        public Models.SdkArchitecture Architecture { get; set; }
+        public string Architecture { get; set; }
 
         /// <summary>
         /// The URL to the binary download.
@@ -56,7 +56,7 @@ namespace DotNETVersionFeed.VersionParser.Sdk
         /// <param name="sdk">SDK type</param>
         /// <param name="link">Link for download</param>
         /// <param name="sha512">Checksum for download</param>
-        public SdkCatalogItem(string name, Models.SdkArchitecture sdk, string link, string sha512)
+        public SdkCatalogItem(string name, string sdk, string link, string sha512)
         {
             Name = name;
             Architecture = sdk;
