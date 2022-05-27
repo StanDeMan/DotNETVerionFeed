@@ -31,8 +31,8 @@ namespace DotNETVersionFeed.Controllers
 
             _cachedSdkCatalog = new SdkCatalog();
             _cache.Set(SdkCatalogKey, _cachedSdkCatalog, new MemoryCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromHours(12))
-                .SetAbsoluteExpiration(TimeSpan.FromDays(1)));
+                .SetSlidingExpiration(TimeSpan.FromHours(24))
+                .SetAbsoluteExpiration(TimeSpan.FromDays(2)));
         }
 
         [HttpGet(Name = "Version")]
