@@ -85,7 +85,7 @@ namespace VersionsFeedService
             }
             catch (Exception e)
             {
-                _logger.LogError($"VersionFeedWorker.UpdateVersions error: {e}");
+                _logger.LogError($"VersionFeedWorker.UpdateVersions error: {e}. Scope: {scope}");
             }
         }
 
