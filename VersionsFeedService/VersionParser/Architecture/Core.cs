@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace DotNETVersionFeed.VersionParser.Architecture
+namespace VersionsFeedService.VersionParser.Architecture
 {
     public enum Version
     {

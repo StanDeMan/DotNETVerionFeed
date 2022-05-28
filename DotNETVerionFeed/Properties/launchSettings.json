@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "DotNETVerionFeed": {
+    "DotNETVersionFeed": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

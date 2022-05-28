@@ -14,9 +14,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System.Runtime.Serialization;
 
-namespace DotNETVersionFeed.VersionParser.Models
+namespace VersionsFeedService.VersionParser.Models
 {
     /// <summary>
     /// Enumerates the supported ARM architectures.

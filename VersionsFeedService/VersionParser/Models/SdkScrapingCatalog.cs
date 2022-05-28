@@ -1,4 +1,4 @@
-﻿namespace DotNETVersionFeed.VersionParser.Models
+﻿namespace VersionsFeedService.VersionParser.Models
 {
     public class SdkScrapingCatalog
     {

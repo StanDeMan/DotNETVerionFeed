@@ -1,4 +1,4 @@
-﻿namespace DotNETVersionFeed.VersionParser.Connection
+﻿namespace VersionsFeedService.VersionParser.Connection
 {
     public static class Internet
     {

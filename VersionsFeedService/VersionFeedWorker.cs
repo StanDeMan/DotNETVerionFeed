@@ -1,66 +1,86 @@
-﻿using Newtonsoft.Json;
 using System.Reflection;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using VersionsFeedService.VersionParser;
+using VersionsFeedService.VersionParser.Extensions;
+using VersionsFeedService.VersionParser.Models;
+using VersionsFeedService.VersionParser.Sdk;
 
-using DotNETVersionFeed.VersionParser;
-using DotNETVersionFeed.VersionParser.Extensions;
-using DotNETVersionFeed.VersionParser.Models;
-using DotNETVersionFeed.VersionParser.Sdk;
-
-namespace DotNETVersionFeed.Controllers
+namespace VersionsFeedService
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class VersionController : Controller
+    public class VersionsFeedWorker : BackgroundService
     {
+        private readonly ILogger<VersionsFeedWorker> _logger;
+        private readonly IServiceProvider _serviceProvider;
+
         private const string SdkCatalogKey = "SdkCatalogKey";
+        private readonly IMemoryCache _cache;
         private static SdkCatalog _cachedSdkCatalog = null!;
         private static SdkScrapingCatalog? _cachedSdkScrapingCatalog;
 
-        // ReSharper disable once NotAccessedField.Local
-        private readonly ILogger<VersionController> _logger;
-        private readonly IMemoryCache _cache;
-
-        public VersionController(ILogger<VersionController> logger, IMemoryCache memoryCache)
+        public VersionsFeedWorker(
+            ILogger<VersionsFeedWorker> logger, 
+            IServiceProvider serviceProvider,
+            IMemoryCache memoryCache)
         {
-            _logger = logger;
             _cache = memoryCache;
+            _logger = logger;
+            _serviceProvider = serviceProvider;
 
             if (_cache.TryGetValue(SdkCatalogKey, out _cachedSdkCatalog)) return;
 
             _cachedSdkCatalog = new SdkCatalog();
             _cache.Set(SdkCatalogKey, _cachedSdkCatalog, new MemoryCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromHours(24))
-                .SetAbsoluteExpiration(TimeSpan.FromDays(2)));
+                .SetSlidingExpiration(TimeSpan.FromHours(12))
+                .SetAbsoluteExpiration(TimeSpan.FromDays(1)));
         }
 
-        [HttpGet(Name = "Version")]
-        public async Task<SdkCatalog?> Get()
+        //public SdkCatalog SdkCatalog => _cache.Get<SdkCatalog>(SdkCatalogKey);
+
+        //public SdkCatalog ReadCache(string key)
+        //{
+        //    return _cache.Get<SdkCatalog>(key);
+        //}
+
+        protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            if (_cachedSdkCatalog.Items.Any()) return _cachedSdkCatalog;
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                await UpdateVersions(cancellationToken);
+
+                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                await Task.Delay(TimeSpan.FromDays(1), cancellationToken);
+            }
+        }
+
+        private async Task UpdateVersions(CancellationToken cancellationToken)
+        {
+            using var scope = _serviceProvider.CreateScope();
 
             try
             {
                 await using var catalogStream = Assembly
                     .GetExecutingAssembly()
-                    .GetManifestResourceStream("DotNETVersionFeed.sdk-parser-catalog.json");
+                    .GetManifestResourceStream("VersionsFeedService.sdk-parser-catalog.json");
 
-                if (catalogStream == null) throw new IndexOutOfRangeException();
+                if (catalogStream == null) throw new ApplicationException();
 
                 var jsonSerializerSettings = new JsonSerializerSettings();
                 jsonSerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
 
                 _cachedSdkScrapingCatalog = JsonConvert.DeserializeObject<SdkScrapingCatalog>(
-                    await new StreamReader(catalogStream).ReadToEndAsync(), 
+                    await new StreamReader(catalogStream).ReadToEndAsync(),
                     jsonSerializerSettings);
 
-                if (_cachedSdkScrapingCatalog?.Sdks == null) throw new IndexOutOfRangeException();
+                if (_cachedSdkScrapingCatalog?.Sdks == null) throw new ApplicationException();
 
                 var scrapeHtml = new HtmlPage();
 
-                var downloadPageLinks = await Task.WhenAll(_cachedSdkScrapingCatalog.Sdks.Select(sdk => Task.Run(() =>
-                    scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Family))));
+                var downloadPageLinks = await Task.WhenAll(_cachedSdkScrapingCatalog.Sdks.Select(sdk =>
+                    Task.Run(() => scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Family), cancellationToken)));
 
                 var rawLinkCatalog = await scrapeHtml.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
 
@@ -72,10 +92,8 @@ namespace DotNETVersionFeed.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError($"GET/version: {e}");
+                _logger.LogError($"VersionFeedWorker.UpdateVersions error: {e}");
             }
-
-            return _cache.Get<SdkCatalog>(SdkCatalogKey);
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace DotNETVersionFeed.VersionParser.Extensions
+namespace VersionsFeedService.VersionParser.Extensions
 {
     /// <summary>
     /// <see cref="T:System.Enum" /> extensions.

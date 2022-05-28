@@ -15,10 +15,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using DotNETVersionFeed.VersionParser.Models;
 using Newtonsoft.Json;
 
-namespace DotNETVersionFeed.VersionParser.Sdk
+namespace VersionsFeedService.VersionParser.Sdk
 {
     /// <summary>
     /// Describes an .NET Core SDK download.

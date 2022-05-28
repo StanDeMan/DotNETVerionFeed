@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
 using System.Runtime.Serialization;
-using DotNETVersionFeed.VersionParser.Extensions;
-using DotNETVersionFeed.VersionParser.Models;
 using HtmlAgilityPack;
-using Version = DotNETVersionFeed.VersionParser.Architecture.Version;
+using VersionsFeedService.VersionParser.Extensions;
+using VersionsFeedService.VersionParser.Models;
+using Version = VersionsFeedService.VersionParser.Architecture.Version;
 
-namespace DotNETVersionFeed.VersionParser
+namespace VersionsFeedService.VersionParser
 {
     public class HtmlPage
     {

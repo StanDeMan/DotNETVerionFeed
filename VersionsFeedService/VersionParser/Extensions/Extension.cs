@@ -1,4 +1,4 @@
-﻿namespace DotNETVersionFeed.VersionParser.Extensions
+﻿namespace VersionsFeedService.VersionParser.Extensions
 {
     public static class EnumMemberAttributeExtension
     {

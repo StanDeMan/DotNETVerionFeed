@@ -17,7 +17,7 @@
 
 using Newtonsoft.Json;
 
-namespace DotNETVersionFeed.VersionParser.Sdk
+namespace VersionsFeedService.VersionParser.Sdk
 {
     /// <summary>
     /// Describes the available .NET Core SDK binary downloads for ARM.
