@@ -38,13 +38,6 @@ namespace VersionsFeedService
                 .SetAbsoluteExpiration(TimeSpan.FromDays(1)));
         }
 
-        //public SdkCatalog SdkCatalog => _cache.Get<SdkCatalog>(SdkCatalogKey);
-
-        //public SdkCatalog ReadCache(string key)
-        //{
-        //    return _cache.Get<SdkCatalog>(key);
-        //}
-
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
