@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="VersionParser\Web\" />
-    <Folder Include="VersionsFeedService.Test\" />
   </ItemGroup>
 
 </Project>
