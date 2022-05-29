@@ -1,10 +1,12 @@
-﻿using System.Globalization;
+﻿using HtmlAgilityPack;
+using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using HtmlAgilityPack;
 using VersionsFeedService.VersionParser.Extensions;
 using VersionsFeedService.VersionParser.Models;
 using Version = VersionsFeedService.VersionParser.Architecture.Version;
 
+[assembly: InternalsVisibleTo("VersionsFeedService.Test")]
 namespace VersionsFeedService.VersionParser
 {
     public class HtmlPage
@@ -15,11 +17,13 @@ namespace VersionsFeedService.VersionParser
 
         private string PageUri { get; set; } = string.Empty;
 
-        private string BaseUri { get; set; } = "https://dotnet.microsoft.com";
+        public string BaseUri { get; set; } = "https://dotnet.microsoft.com";
 
-        private string DownloadUri { get; } = "download/dotnet";
+        public string? VersionsFeedUri { get; set; } = "https://dotnetversionfeed.azurewebsites.net/versions";
 
-        private string DotNetUri { get; }
+        public string DownloadUri { get; } = "download/dotnet";
+
+        public string DotNetUri { get; }
 
         public CultureInfo CultureInfo { get; set; } = CultureInfo.CreateSpecificCulture("en-us");
 
@@ -136,7 +140,7 @@ namespace VersionsFeedService.VersionParser
         /// </summary>
         /// <param name="uri">Uri to download SDK page</param>
         /// <returns>Download SDK uri and checksum</returns>
-        private async Task<(string downLoadLink, string checkSum)> ReadDownloadUriAndChecksumAsync(string uri)
+        internal async Task<(string downLoadLink, string checkSum)> ReadDownloadUriAndChecksumAsync(string uri)
         {
             // load page content from uri
             var htmlPage = await new HtmlPage(BaseUri).LoadAsync($"{uri}");

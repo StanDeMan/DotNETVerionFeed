@@ -23,4 +23,9 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="VersionParser\Web\" />
+    <Folder Include="VersionsFeedService.Test\" />
+  </ItemGroup>
+
 </Project>
