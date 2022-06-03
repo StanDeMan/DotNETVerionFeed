@@ -79,6 +79,7 @@ namespace VersionsFeedService
 
                 var ok = FillCachedSdkCatalog(rawLinkCatalog);
 
+                _cache.Remove(SdkCatalogKey);
                 _cache.Set(SdkCatalogKey, ok 
                     ? _cachedSdkCatalog 
                     : new SdkCatalog());
@@ -97,6 +98,8 @@ namespace VersionsFeedService
         /// <param name="rawLinkCatalog">Raw catalog data: (link, checkSum)</param>
         private static bool FillCachedSdkCatalog(IEnumerable<(string, string)> rawLinkCatalog)
         {
+            _cachedSdkCatalog = new SdkCatalog();                                       // reset entries
+
             foreach (var (downLoadLink, checkSum) in rawLinkCatalog)
             {
                 var dotNetPart = downLoadLink.Split('/')[7].Split('-');                 // read .NET part from download uri
