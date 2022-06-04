@@ -34,8 +34,8 @@ namespace VersionsFeedService
 
             _cachedSdkCatalog = new SdkCatalog();
             _cache.Set(SdkCatalogKey, _cachedSdkCatalog, new MemoryCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromHours(12))
-                .SetAbsoluteExpiration(TimeSpan.FromDays(1)));
+                .SetSlidingExpiration(TimeSpan.FromDays(1))
+                .SetAbsoluteExpiration(TimeSpan.FromDays(2)));
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -45,7 +45,7 @@ namespace VersionsFeedService
                 await UpdateVersions(cancellationToken);
 
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(TimeSpan.FromDays(1), cancellationToken);
+                await Task.Delay(TimeSpan.FromHours(12), cancellationToken);
             }
         }
 
