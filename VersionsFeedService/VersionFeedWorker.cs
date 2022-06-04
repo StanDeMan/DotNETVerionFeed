@@ -104,7 +104,7 @@ namespace VersionsFeedService
             {
                 var dotNetPart = downLoadLink.Split('/')[7].Split('-');                 // read .NET part from download uri
 
-                // fill to cached catalog
+                // fill cached catalog with new entries
                 _cachedSdkCatalog?.Items.Add(new SdkCatalogItem(
                     $"{dotNetPart[2].Split('.')[0]}.{dotNetPart[2].Split('.')[1]}",     // extract belonging SDK version
                     dotNetPart[4].Contains(Platform.Bitness64.ToMemberString())         // read SDK architecture    
