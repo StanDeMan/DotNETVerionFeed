@@ -25,10 +25,16 @@ namespace VersionsFeedService.VersionParser.Sdk
     public class SdkCatalogItem
     {
         /// <summary>
-        /// The SDK name (like "3.1.402").
+        /// The SDK name (like "6.0").
         /// </summary>
         [JsonProperty(PropertyName = "Name", Required = Required.Always)]
         public string Name { get; set; }
+
+        /// <summary>
+        /// The SDK Release (like "6.0.301").
+        /// </summary>
+        [JsonProperty(PropertyName = "Release", Required = Required.Always)]
+        public string Release { get; set; }
 
         /// <summary>
         /// Specifies the 32-bit or 64-bit version of the SDK.
@@ -52,12 +58,14 @@ namespace VersionsFeedService.VersionParser.Sdk
         /// SdkCatalog Item Constructor
         /// </summary>
         /// <param name="name">SDK Name </param>
+        /// <param name="release">SDK Release number</param>
         /// <param name="sdk">SDK type</param>
         /// <param name="link">Link for download</param>
         /// <param name="sha512">Checksum for download</param>
-        public SdkCatalogItem(string name, string sdk, string link, string sha512)
+        public SdkCatalogItem(string name, string release, string sdk, string link, string sha512)
         {
             Name = name;
+            Release = release;
             Architecture = sdk;
             Link = link;
             Sha512 = sha512;
