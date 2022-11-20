@@ -17,6 +17,14 @@
     {
       "Version": "6.0",
       "Family": "Arm64"
+    },
+    {
+      "Version": "7.0",
+      "Family": "Arm32"
+    },
+    {
+      "Version": "7.0",
+      "Family": "Arm64"
     }
   ]
 }
