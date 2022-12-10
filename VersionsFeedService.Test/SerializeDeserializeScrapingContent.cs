@@ -63,6 +63,16 @@ namespace VersionsFeedService.Test
                    {
                        Family = SdkArchitecture.Arm64,
                        Version = Version.Core6
+                   },
+                   new()
+                   {
+                       Family = SdkArchitecture.Arm32,
+                       Version = Version.Core7
+                   },
+                   new()
+                   {
+                       Family = SdkArchitecture.Arm64,
+                       Version = Version.Core7
                    }
                 }
             };
@@ -78,7 +88,7 @@ namespace VersionsFeedService.Test
             Console.WriteLine($"Culture: {readCatalog.Culture}");
             Console.WriteLine($"BaseUri: {readCatalog.MicrosoftBaseUri}\r\n");
 
-            var sdks = readCatalog.Sdks ?? new List<SdkScraper>();
+            var sdks = readCatalog.Sdks;
 
             foreach (var sdk in sdks)
             {
