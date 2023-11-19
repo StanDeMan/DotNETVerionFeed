@@ -75,7 +75,7 @@ namespace VersionsFeedService.VersionParser
                 ? SdkArchitecture.Arm32.GetAttributeOfType<EnumMemberAttribute>().Value 
                 : SdkArchitecture.Arm64.GetAttributeOfType<EnumMemberAttribute>().Value;
 
-            // Get .NET main version: 3.1/5.0/6.0/etc.
+            // Get .NET main version
             var actual = version.GetAttributeOfType<EnumMemberAttribute>().Value;
             var htmlPage = await new HtmlPage().LoadAsync($"{DotNetUri}/{actual}");
 
@@ -99,13 +99,13 @@ namespace VersionsFeedService.VersionParser
             downLoads.Sort();
             downLoads.Reverse();
 
-            for (var i = 0; i < downLoads?.Count; i++)
+            for (var i = 0; i < downLoads.Count; i++)
             {
                 // build complete download uri
-                if (downLoads != null) downLoads[i] = $"{BaseUri}{downLoads[i]}";
+                downLoads[i] = $"{BaseUri}{downLoads[i]}";
             }
 
-            return downLoads ?? new List<string>();
+            return downLoads;
         }
 
         /// <summary>

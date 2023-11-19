@@ -57,10 +57,9 @@ namespace VersionsFeedService
             {
                 await using var catalogStream = Assembly
                     .GetExecutingAssembly()
-                    .GetManifestResourceStream("VersionsFeedService.sdk-parser-catalog.json");
-
-                if (catalogStream == null) throw new ApplicationException();
-
+                    .GetManifestResourceStream("VersionsFeedService.sdk-parser-catalog.json") 
+                        ?? throw new ApplicationException();
+                
                 var jsonSerializerSettings = new JsonSerializerSettings();
                 jsonSerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
 

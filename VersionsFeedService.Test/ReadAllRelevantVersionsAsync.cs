@@ -15,10 +15,10 @@ namespace VersionsFeedService.Test
             var page = new HtmlPage();
             Assert.IsNotNull(page);
 
-            var downLoadLinks32 = await page.ReadDownloadPagesAsync(Version.Core3, SdkArchitecture.Arm32);
+            var downLoadLinks32 = await page.ReadDownloadPagesAsync(Version.Core8, SdkArchitecture.Arm32);
             Assert.IsNotNull(downLoadLinks32);
 
-            var downLoadLinks64 = await page.ReadDownloadPagesAsync(Version.Core3, SdkArchitecture.Arm64);
+            var downLoadLinks64 = await page.ReadDownloadPagesAsync(Version.Core8, SdkArchitecture.Arm64);
             Assert.IsNotNull(downLoadLinks64);
 
             downloadLinks.AddRange(downLoadLinks32);

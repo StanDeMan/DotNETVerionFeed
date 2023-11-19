@@ -47,12 +47,12 @@ namespace VersionsFeedService.Test
                    new()
                    {
                        Family = SdkArchitecture.Arm32,
-                       Version = Version.Core3
+                       Version = Version.Core8
                    },
                    new()
                    {
                        Family = SdkArchitecture.Arm64,
-                       Version = Version.Core3
+                       Version = Version.Core8
                    },
                    new()
                    {
