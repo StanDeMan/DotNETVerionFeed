@@ -161,14 +161,15 @@ namespace VersionsFeedService.VersionParser
         /// </summary>
         /// <param name="uris">Uri array list pointing to the downloading SDK pages</param>
         /// <returns>Download SDK uri and checksum</returns>
-        public Task<(string downLoadLink, string checkSum)[]> ReadDownloadUriAndChecksumBulkAsync(IEnumerable<List<string>> uris)
+        public static async Task<(string downLoadLink, string checkSum)[]> ReadDownloadUriAndChecksumBulkAsync(IEnumerable<List<string>> uris)
         {
             var page = new HtmlPage();
 
-            return Task.WhenAll(uris
+            return await Task.WhenAll(uris
                 .SelectMany(sdkArea => sdkArea)
-                .Select(downloadPageLink => Task.Run(async () => 
-                    await page.ReadDownloadUriAndChecksumAsync(downloadPageLink)))
+                .Select(downloadPageLink => 
+                    Task.Run(async () => 
+                        await page.ReadDownloadUriAndChecksumAsync(downloadPageLink)))
                 .AsParallel());
         }
     }
