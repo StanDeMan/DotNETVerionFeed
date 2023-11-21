@@ -18,9 +18,10 @@ namespace VersionsFeedService.Test
 
             await using var catalogStream = Assembly
                 .GetExecutingAssembly()
-                .GetManifestResourceStream("GingerMintSoft.VersionParser.Test.sdk-parser-catalog.json");
+                .GetManifestResourceStream("VersionsFeedService.Test.sdk-parser-catalog.json") 
+                    ?? throw new ApplicationException();
 
-            if (catalogStream == null) return;
+            Assert.AreNotEqual(null, catalogStream);
 
             var jsonSerializerSettings = new JsonSerializerSettings();
             jsonSerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
@@ -30,12 +31,12 @@ namespace VersionsFeedService.Test
                     await new StreamReader(catalogStream).ReadToEndAsync(),
                     jsonSerializerSettings);
 
-            if (_cachedSdkScrapingCatalog?.Sdks == null) return;
+            Assert.AreNotEqual(null, _cachedSdkScrapingCatalog?.Sdks);
 
-            var downloadPageLinks = await Task.WhenAll(_cachedSdkScrapingCatalog.Sdks.Select(sdk => Task.Run(() => 
+            var downloadPageLinks = await Task.WhenAll(_cachedSdkScrapingCatalog!.Sdks.Select(sdk => Task.Run(() => 
                 scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Family))));
 
-            var rawLinkCatalog = await scrapeHtml.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
+            var rawLinkCatalog = await HtmlPage.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
 
             foreach (var catalogItem in rawLinkCatalog)
             {
