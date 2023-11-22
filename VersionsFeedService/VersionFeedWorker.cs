@@ -18,7 +18,7 @@ namespace VersionsFeedService
 
         private const string SdkCatalogKey = "SdkCatalogKey";
         private readonly IMemoryCache _cache;
-        private static SdkCatalog _cachedSdkCatalog = null!;
+        private static SdkCatalog? _cachedSdkCatalog;
         private static SdkScrapingCatalog? _cachedSdkScrapingCatalog;
 
         public VersionsFeedWorker(
