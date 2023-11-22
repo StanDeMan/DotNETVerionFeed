@@ -36,7 +36,7 @@ namespace VersionsFeedService.Test
             var downloadPageLinks = await Task.WhenAll(_cachedSdkScrapingCatalog!.Sdks.Select(sdk => Task.Run(() => 
                 scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Family))));
 
-            var rawLinkCatalog = await HtmlPage.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
+            var rawLinkCatalog = await scrapeHtml.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
 
             foreach (var catalogItem in rawLinkCatalog)
             {
