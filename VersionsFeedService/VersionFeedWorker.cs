@@ -1,4 +1,5 @@
 using System.Reflection;
+using DotNETVersionFeed.Transient;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -74,7 +75,13 @@ namespace VersionsFeedService
                 var downloadPageLinks = await Task.WhenAll(_cachedSdkScrapingCatalog.Sdks.Select(sdk =>
                     Task.Run(() => scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Family), cancellationToken)));
 
-                var rawLinkCatalog = await scrapeHtml.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
+                var rawLinkCatalog = Array.Empty<(string downLoadLink, string checkSum)>();
+
+                await new Retry<ArgumentNullException>().Policy.ExecuteAsync(async () =>
+                {
+                    rawLinkCatalog = await scrapeHtml.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
+                });
+
                 var ok = FillCachedSdkCatalog(rawLinkCatalog);
 
                 _cache.Remove(SdkCatalogKey);
