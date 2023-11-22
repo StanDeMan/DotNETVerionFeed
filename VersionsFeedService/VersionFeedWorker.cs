@@ -75,7 +75,6 @@ namespace VersionsFeedService
                     Task.Run(() => scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Family), cancellationToken)));
 
                 var rawLinkCatalog = await scrapeHtml.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
-
                 var ok = FillCachedSdkCatalog(rawLinkCatalog);
 
                 _cache.Remove(SdkCatalogKey);
