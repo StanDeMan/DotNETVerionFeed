@@ -60,7 +60,7 @@ namespace VersionsFeedService.Test
             var page = new HtmlPage();
             Assert.IsNotNull(page);
 
-            var downLoad = await page.ReadDownloadPageForVersionAsync(Version.Core8, "8.0.100", SdkArchitecture.Arm64);
+            var downLoad = await page.ReadDownloadPageForVersionAsync(Version.Core8, "8.0.100", SdkArchitecture.Arm32);
             Assert.IsNotNull(downLoad);
 
             Console.WriteLine($"{downLoad} \r\n");
