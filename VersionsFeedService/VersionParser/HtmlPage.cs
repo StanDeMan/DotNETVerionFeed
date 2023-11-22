@@ -146,14 +146,17 @@ namespace VersionsFeedService.VersionParser
             var htmlPage = await new HtmlPage(BaseUri).LoadAsync($"{uri}");
 
             // .NET SDK download link and checksum
-            return (htmlPage.DocumentNode
-                        .SelectNodes("//a[@id='directLink']")
-                        .Select(x => x.GetAttributeValue("href", string.Empty))
-                        .First(), 
-                    htmlPage.DocumentNode
-                        .SelectNodes("//input[@id='checksum']")
-                        .Select(x => x.GetAttributeValue("value", string.Empty))
-                        .First());
+            var downLoadLink = htmlPage.DocumentNode
+                .SelectNodes("//a[@id='directLink']")
+                .Select(x => x.GetAttributeValue("href", string.Empty))
+                .First();
+
+            var checkSum = htmlPage.DocumentNode
+                .SelectNodes("//input[@id='checksum']")
+                .Select(x => x.GetAttributeValue("value", string.Empty))
+                .First();
+
+            return (downLoadLink, checkSum);
         }
 
         /// <summary>
