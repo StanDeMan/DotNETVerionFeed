@@ -21,7 +21,7 @@ namespace VersionsFeedService.Test
             Console.WriteLine($"Download Link: {downLoadLink} \r\n" +
                               $"Checksum: {checkSum} \r\n");
 
-            sdkUri = "https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-3.1.418-linux-arm32-binaries";
+            sdkUri = "https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-6.0.202-linux-arm32-binaries";
 
             (downLoadLink, checkSum) = await page.ReadDownloadUriAndChecksumAsync($"{sdkUri}");
             Assert.IsNotNull(downLoadLink);
