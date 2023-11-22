@@ -82,16 +82,16 @@ namespace VersionsFeedService.VersionParser
             // Filter only for Linux .NET released SDKs
             var downLoads = htmlPage.DocumentNode
                 .SelectNodes($"//a[contains(text(), '{sdk}')]")
-                .Select(row => 
+                .Select(row =>
                     row.GetAttributeValue("href", string.Empty))
-                .Where(href => 
-                    !href.Contains("alpine") && 
-                    !href.Contains("x32") && 
-                    !href.Contains("x64") && 
-                    !href.Contains("macos") && 
-                    !href.Contains("windows") && 
-                    !href.Contains("runtime") && 
-                    !href.Contains("rc") && 
+                .Where(href =>
+                    !href.Contains("alpine") &&
+                    !href.Contains("x32") &&
+                    !href.Contains("x64") &&
+                    !href.Contains("macos") &&
+                    !href.Contains("windows") &&
+                    !href.Contains("runtime") &&
+                    !href.Contains("rc") &&
                     !href.Contains("preview"))
                 .ToList();
 
@@ -161,7 +161,7 @@ namespace VersionsFeedService.VersionParser
         /// </summary>
         /// <param name="uris">Uri array list pointing to the downloading SDK pages</param>
         /// <returns>Download SDK uri and checksum</returns>
-        public static async Task<(string downLoadLink, string checkSum)[]> ReadDownloadUriAndChecksumBulkAsync(IEnumerable<List<string>> uris)
+        public async Task<(string downLoadLink, string checkSum)[]> ReadDownloadUriAndChecksumBulkAsync(IEnumerable<List<string>> uris)
         {
             var page = new HtmlPage();
 
