@@ -1,7 +1,7 @@
 ﻿using Polly;
 using Polly.Retry;
 
-namespace DotNETVersionFeed.Transient
+namespace VersionsFeedService.VersionParser.Transient
 {
     public class Retry<T> where T : Exception
     {

@@ -1,5 +1,4 @@
 using System.Reflection;
-using DotNETVersionFeed.Transient;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +8,7 @@ using VersionsFeedService.VersionParser;
 using VersionsFeedService.VersionParser.Extensions;
 using VersionsFeedService.VersionParser.Models;
 using VersionsFeedService.VersionParser.Sdk;
+using VersionsFeedService.VersionParser.Transient;
 
 namespace VersionsFeedService
 {
