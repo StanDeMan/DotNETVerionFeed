@@ -8,6 +8,7 @@ using VersionsFeedService.VersionParser;
 using VersionsFeedService.VersionParser.Extensions;
 using VersionsFeedService.VersionParser.Models;
 using VersionsFeedService.VersionParser.Sdk;
+using VersionsFeedService.VersionParser.Transient;
 
 namespace VersionsFeedService
 {
@@ -18,7 +19,7 @@ namespace VersionsFeedService
 
         private const string SdkCatalogKey = "SdkCatalogKey";
         private readonly IMemoryCache _cache;
-        private static SdkCatalog _cachedSdkCatalog = null!;
+        private static SdkCatalog? _cachedSdkCatalog;
         private static SdkScrapingCatalog? _cachedSdkScrapingCatalog;
 
         public VersionsFeedWorker(
@@ -74,7 +75,12 @@ namespace VersionsFeedService
                 var downloadPageLinks = await Task.WhenAll(_cachedSdkScrapingCatalog.Sdks.Select(sdk =>
                     Task.Run(() => scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Family), cancellationToken)));
 
-                var rawLinkCatalog = await scrapeHtml.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
+                var rawLinkCatalog = Array.Empty<(string downLoadLink, string checkSum)>();
+
+                await new Retry<ArgumentNullException>().Policy.ExecuteAsync(async () =>
+                {
+                    rawLinkCatalog = await scrapeHtml.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
+                });
 
                 var ok = FillCachedSdkCatalog(rawLinkCatalog);
 

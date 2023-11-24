@@ -82,16 +82,16 @@ namespace VersionsFeedService.VersionParser
             // Filter only for Linux .NET released SDKs
             var downLoads = htmlPage.DocumentNode
                 .SelectNodes($"//a[contains(text(), '{sdk}')]")
-                .Select(row => 
+                .Select(row =>
                     row.GetAttributeValue("href", string.Empty))
-                .Where(href => 
-                    !href.Contains("alpine") && 
-                    !href.Contains("x32") && 
-                    !href.Contains("x64") && 
-                    !href.Contains("macos") && 
-                    !href.Contains("windows") && 
-                    !href.Contains("runtime") && 
-                    !href.Contains("rc") && 
+                .Where(href =>
+                    !href.Contains("alpine") &&
+                    !href.Contains("x32") &&
+                    !href.Contains("x64") &&
+                    !href.Contains("macos") &&
+                    !href.Contains("windows") &&
+                    !href.Contains("runtime") &&
+                    !href.Contains("rc") &&
                     !href.Contains("preview"))
                 .ToList();
 
@@ -146,14 +146,17 @@ namespace VersionsFeedService.VersionParser
             var htmlPage = await new HtmlPage(BaseUri).LoadAsync($"{uri}");
 
             // .NET SDK download link and checksum
-            return (htmlPage.DocumentNode
-                        .SelectNodes("//a[@id='directLink']")
-                        .Select(x => x.GetAttributeValue("href", string.Empty))
-                        .First(), 
-                    htmlPage.DocumentNode
-                        .SelectNodes("//input[@id='checksum']")
-                        .Select(x => x.GetAttributeValue("value", string.Empty))
-                        .First());
+            var downLoadLink = htmlPage.DocumentNode
+                .SelectNodes("//a[@id='directLink']")
+                .Select(x => x.GetAttributeValue("href", string.Empty))
+                .First();
+
+            var checkSum = htmlPage.DocumentNode
+                .SelectNodes("//input[@id='checksum']")
+                .Select(x => x.GetAttributeValue("value", string.Empty))
+                .First();
+
+            return (downLoadLink, checkSum);
         }
 
         /// <summary>
