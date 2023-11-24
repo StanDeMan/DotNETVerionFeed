@@ -3,6 +3,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using VersionsFeedService.VersionParser;
 using VersionsFeedService.VersionParser.Models;
+using VersionsFeedService.VersionParser.Transient;
 
 namespace VersionsFeedService.Test
 {
@@ -36,11 +37,19 @@ namespace VersionsFeedService.Test
             var downloadPageLinks = await Task.WhenAll(_cachedSdkScrapingCatalog!.Sdks.Select(sdk => Task.Run(() => 
                 scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Family))));
 
-            var rawLinkCatalog = await scrapeHtml.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
+            var rawLinkCatalog = Array.Empty<(string downLoadLink, string checkSum)>();
 
-            foreach (var catalogItem in rawLinkCatalog)
+            // test retry logic
+            await new Retry<ArgumentNullException>().Policy.ExecuteAsync(async () =>
             {
-                Debug.Print($"{catalogItem.Item1}, {catalogItem.Item2}");
+                rawLinkCatalog = await scrapeHtml.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
+            });
+
+            Assert.AreNotEqual(null, rawLinkCatalog);
+
+            foreach (var (downLoadLink, checkSum) in rawLinkCatalog)
+            {
+                Debug.Print($"{downLoadLink}, {checkSum}");
             }
         }
     }
