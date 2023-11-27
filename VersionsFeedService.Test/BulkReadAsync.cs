@@ -42,7 +42,7 @@ namespace VersionsFeedService.Test
             // test retry logic
             await new Retry<ArgumentNullException>().Policy.ExecuteAsync(async () =>
             {
-                rawLinkCatalog = await scrapeHtml.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
+                rawLinkCatalog = await HtmlPage.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
             });
 
             Assert.AreNotEqual(null, rawLinkCatalog);

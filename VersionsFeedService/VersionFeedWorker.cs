@@ -64,9 +64,10 @@ namespace VersionsFeedService
                 var jsonSerializerSettings = new JsonSerializerSettings();
                 jsonSerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
 
-                _cachedSdkScrapingCatalog = JsonConvert.DeserializeObject<SdkScrapingCatalog>(
-                    await new StreamReader(catalogStream).ReadToEndAsync(),
-                    jsonSerializerSettings);
+                _cachedSdkScrapingCatalog =
+                    JsonConvert.DeserializeObject<SdkScrapingCatalog>(
+                        await new StreamReader(catalogStream).ReadToEndAsync(cancellationToken),
+                        jsonSerializerSettings);
 
                 if (_cachedSdkScrapingCatalog?.Sdks == null) throw new ApplicationException();
 
@@ -79,7 +80,7 @@ namespace VersionsFeedService
 
                 await new Retry<ArgumentNullException>().Policy.ExecuteAsync(async () =>
                 {
-                    rawLinkCatalog = await scrapeHtml.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
+                    rawLinkCatalog = await HtmlPage.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
                 });
 
                 var ok = FillCachedSdkCatalog(rawLinkCatalog);
