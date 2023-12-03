@@ -4,15 +4,15 @@
   "Sdks": [
     {
       "Version": "6.0",
-      "Processors": [ "Arm32", "Arm64" ]
+      "Family": [ "Arm32", "Arm64" ]
     },
     {
       "Version": "7.0",
-      "Processors": [ "Arm32", "Arm64" ]
+      "Family": [ "Arm32", "Arm64" ]
     },
     {
       "Version": "8.0",
-      "Processors": [ "Arm32", "Arm64" ]
+      "Family": [ "Arm32", "Arm64" ]
     }
   ]
 }

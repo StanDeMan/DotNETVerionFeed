@@ -10,7 +10,7 @@ namespace VersionsFeedService.Test
     [TestClass]
     public class BulkReadAsync
     {
-        private static SdkScrapingCatalog? _cachedSdkScrapingCatalog;
+        private static SdkScrapingCatalog? _sdkScrapingCatalog;
 
         [TestMethod]
         public async Task BulkReadTestAsync()
@@ -27,14 +27,14 @@ namespace VersionsFeedService.Test
             var jsonSerializerSettings = new JsonSerializerSettings();
             jsonSerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
 
-            _cachedSdkScrapingCatalog =
+            _sdkScrapingCatalog =
                 JsonConvert.DeserializeObject<SdkScrapingCatalog>(
                     await new StreamReader(catalogStream).ReadToEndAsync(),
                     jsonSerializerSettings);
 
-            Assert.AreNotEqual(null, _cachedSdkScrapingCatalog?.Sdks);
+            Assert.AreNotEqual(null, _sdkScrapingCatalog?.Sdks);
 
-            var downloadPageLinks = await Task.WhenAll(_cachedSdkScrapingCatalog!.Sdks.Select(sdk => Task.Run(() => 
+            var downloadPageLinks = await Task.WhenAll(_sdkScrapingCatalog!.Sdks.Select(sdk => Task.Run(() => 
                 scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Family))));
 
             var rawLinkCatalog = Array.Empty<(string downLoadLink, string checkSum)>();
