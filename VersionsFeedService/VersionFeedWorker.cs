@@ -43,14 +43,14 @@ namespace VersionsFeedService
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                await UpdateVersions(cancellationToken);
+                await UpdateVersions();
 
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 await Task.Delay(TimeSpan.FromHours(12), cancellationToken);
             }
         }
 
-        private async Task UpdateVersions(CancellationToken cancellationToken)
+        private async Task UpdateVersions()
         {
             using var scope = _serviceProvider.CreateScope();
 
@@ -66,7 +66,7 @@ namespace VersionsFeedService
 
                 _cachedSdkScrapingCatalog =
                     JsonConvert.DeserializeObject<SdkScrapingCatalog>(
-                        await new StreamReader(catalogStream).ReadToEndAsync(cancellationToken),
+                        await new StreamReader(catalogStream).ReadToEndAsync(),
                         jsonSerializerSettings);
 
                 if (_cachedSdkScrapingCatalog?.Sdks == null) throw new ApplicationException();
@@ -74,7 +74,7 @@ namespace VersionsFeedService
                 var scrapeHtml = new HtmlPage();
 
                 var downloadPageLinks = await Task.WhenAll(_cachedSdkScrapingCatalog.Sdks.Select(sdk =>
-                    Task.Run(() => scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Family), cancellationToken)));
+                    Task.Run(() => scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Family))));
 
                 var rawLinkCatalog = Array.Empty<(string downLoadLink, string checkSum)>();
 
