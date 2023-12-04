@@ -47,16 +47,6 @@ namespace VersionsFeedService.Test
                    new()
                    {
                        Family = SdkArchitecture.Arm32,
-                       Version = Version.Core8
-                   },
-                   new()
-                   {
-                       Family = SdkArchitecture.Arm64,
-                       Version = Version.Core8
-                   },
-                   new()
-                   {
-                       Family = SdkArchitecture.Arm32,
                        Version = Version.Core6
                    },
                    new()
@@ -73,6 +63,16 @@ namespace VersionsFeedService.Test
                    {
                        Family = SdkArchitecture.Arm64,
                        Version = Version.Core7
+                   },
+                   new()
+                   {
+                       Family = SdkArchitecture.Arm32,
+                       Version = Version.Core8
+                   },
+                   new()
+                   {
+                       Family = SdkArchitecture.Arm64,
+                       Version = Version.Core8
                    }
                 }
             };
