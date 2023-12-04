@@ -38,43 +38,44 @@ namespace VersionsFeedService.Test
             Console.WriteLine();
             Console.WriteLine("Sdk scraping part:");
 
-            var catalog = new SdkScrapingCatalog
+           var sdkScrapes = new List<SdkScraper>
+           {
+               new()
+               {
+                   Family = SdkArchitecture.Arm32,
+                   Version = Version.Core6
+               },
+               new()
+               {
+                   Family = SdkArchitecture.Arm64,
+                   Version = Version.Core6
+               },
+               new()
+               {
+                   Family = SdkArchitecture.Arm32,
+                   Version = Version.Core7
+               },
+               new()
+               {
+                   Family = SdkArchitecture.Arm64,
+                   Version = Version.Core7
+               },
+               new()
+               {
+                   Family = SdkArchitecture.Arm32,
+                   Version = Version.Core8
+               },
+               new()
+               {
+                   Family = SdkArchitecture.Arm64,
+                   Version = Version.Core8
+               }
+           };
+           var catalog = new SdkScrapingCatalog
             {
                 Culture = "en-Us",
                 MicrosoftBaseUri = "https://dotnet.microsoft.com",
-                Sdks = new List<SdkScraper>()
-                {
-                   new()
-                   {
-                       Family = SdkArchitecture.Arm32,
-                       Version = Version.Core6
-                   },
-                   new()
-                   {
-                       Family = SdkArchitecture.Arm64,
-                       Version = Version.Core6
-                   },
-                   new()
-                   {
-                       Family = SdkArchitecture.Arm32,
-                       Version = Version.Core7
-                   },
-                   new()
-                   {
-                       Family = SdkArchitecture.Arm64,
-                       Version = Version.Core7
-                   },
-                   new()
-                   {
-                       Family = SdkArchitecture.Arm32,
-                       Version = Version.Core8
-                   },
-                   new()
-                   {
-                       Family = SdkArchitecture.Arm64,
-                       Version = Version.Core8
-                   }
-                }
+                Sdks = sdkScrapes
             };
 
             var jsonSerializerSettings = new JsonSerializerSettings();
