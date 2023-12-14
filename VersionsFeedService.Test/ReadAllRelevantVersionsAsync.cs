@@ -15,19 +15,27 @@ namespace VersionsFeedService.Test
             var page = new HtmlPage();
             Assert.IsNotNull(page);
 
-            var downLoadLinks32 = await page.ReadDownloadPagesAsync(Version.Core8, SdkArchitecture.Arm32);
-            Assert.IsNotNull(downLoadLinks32);
+            var architecture = new SdkArchitecture[] { SdkArchitecture.Arm32 };
 
-            var downLoadLinks64 = await page.ReadDownloadPagesAsync(Version.Core8, SdkArchitecture.Arm64);
+            var downLoadLinks32 = await page.ReadDownloadPagesAsync(Version.Core8, architecture);
+            Assert.IsNotNull(downLoadLinks32);
+            
+            architecture = new SdkArchitecture[] { SdkArchitecture.Arm64 };
+
+            var downLoadLinks64 = await page.ReadDownloadPagesAsync(Version.Core8, architecture);
             Assert.IsNotNull(downLoadLinks64);
 
             downloadLinks.AddRange(downLoadLinks32);
             downloadLinks.AddRange(downLoadLinks64);
 
-            downLoadLinks32 = await page.ReadDownloadPagesAsync(Version.Core6, SdkArchitecture.Arm32);
+            architecture = new SdkArchitecture[] { SdkArchitecture.Arm32 };
+
+            downLoadLinks32 = await page.ReadDownloadPagesAsync(Version.Core6, architecture);
             Assert.IsNotNull(downLoadLinks32);
 
-            downLoadLinks64 = await page.ReadDownloadPagesAsync(Version.Core6, SdkArchitecture.Arm64);
+            architecture = new SdkArchitecture[] { SdkArchitecture.Arm64 };
+
+            downLoadLinks64 = await page.ReadDownloadPagesAsync(Version.Core6, architecture);
             Assert.IsNotNull(downLoadLinks64);
 
             downloadLinks.AddRange(downLoadLinks32);

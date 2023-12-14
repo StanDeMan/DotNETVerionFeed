@@ -6,6 +6,6 @@ namespace VersionsFeedService.VersionParser.Models
     {
         public Version Version { get; set; }
 
-        public SdkArchitecture Family { get; set; }
+        public required SdkArchitecture[] Families { get; set; }
     }
 }

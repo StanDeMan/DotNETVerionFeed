@@ -11,9 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="sdk-parser-catalog.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="sdk-parser-catalog.json" />
   </ItemGroup>
 
   <ItemGroup>

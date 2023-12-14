@@ -35,7 +35,7 @@ namespace VersionsFeedService.Test
             Assert.AreNotEqual(null, _sdkScrapingCatalog?.Sdks);
 
             var downloadPageLinks = await Task.WhenAll(_sdkScrapingCatalog!.Sdks.Select(sdk => Task.Run(() => 
-                scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Family))));
+                scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Families))));
 
             var rawLinkCatalog = Array.Empty<(string downLoadLink, string checkSum)>();
 

@@ -66,57 +66,64 @@ namespace VersionsFeedService.VersionParser
         /// Read download .NET versions at given page
         /// </summary>
         /// <param name="version">Search for this .NET version</param>
-        /// <param name="architecture">Search for this architecture/bitness</param>
+        /// <param name="architectures">Search for this architectures/bitness</param>
         /// <returns>List of partially version download uris</returns>
-        public async Task<List<string>> ReadDownloadPagesAsync(Version version, SdkArchitecture architecture)
+        public async Task<List<string>> ReadDownloadPagesAsync(Version version, SdkArchitecture[] architectures)
         {
-            // Get ARM bitness architecture for SDK
-            var sdk = architecture == SdkArchitecture.Arm32 
-                ? SdkArchitecture.Arm32.GetAttributeOfType<EnumMemberAttribute>().Value 
-                : SdkArchitecture.Arm64.GetAttributeOfType<EnumMemberAttribute>().Value;
+            var allDownLoads = new List<string>();
 
-            // Get .NET main version
-            var actual = version.GetAttributeOfType<EnumMemberAttribute>().Value;
-            var htmlPage = await new HtmlPage().LoadAsync($"{DotNetUri}/{actual}");
-
-            // Filter only for Linux .NET released SDKs
-            var downLoads = htmlPage.DocumentNode
-                .SelectNodes($"//a[contains(text(), '{sdk}')]")
-                .Select(row =>
-                    row.GetAttributeValue("href", string.Empty))
-                .Where(href =>
-                    !href.Contains("alpine") &&
-                    !href.Contains("x32") &&
-                    !href.Contains("x64") &&
-                    !href.Contains("macos") &&
-                    !href.Contains("windows") &&
-                    !href.Contains("runtime") &&
-                    !href.Contains("rc") &&
-                    !href.Contains("preview"))
-                .ToList();
-
-            // reverse version number ordering -> the actual is on top
-            downLoads.Sort();
-            downLoads.Reverse();
-
-            for (var i = 0; i < downLoads.Count; i++)
+            foreach (var architecture in architectures)
             {
-                // build complete download uri
-                downLoads[i] = $"{BaseUri}{downLoads[i]}";
+                // Get ARM bitness architecture for SDK
+                var sdk = architecture == SdkArchitecture.Arm32
+                    ? SdkArchitecture.Arm32.GetAttributeOfType<EnumMemberAttribute>().Value
+                    : SdkArchitecture.Arm64.GetAttributeOfType<EnumMemberAttribute>().Value;
+
+                // Get .NET main version
+                var actual = version.GetAttributeOfType<EnumMemberAttribute>().Value;
+                var htmlPage = await new HtmlPage().LoadAsync($"{DotNetUri}/{actual}");
+
+                // Filter only for Linux .NET released SDKs
+                var downLoads = htmlPage.DocumentNode
+                    .SelectNodes($"//a[contains(text(), '{sdk}')]")
+                    .Select(row =>
+                        row.GetAttributeValue("href", string.Empty))
+                    .Where(href =>
+                        !href.Contains("alpine") &&
+                        !href.Contains("x32") &&
+                        !href.Contains("x64") &&
+                        !href.Contains("macos") &&
+                        !href.Contains("windows") &&
+                        !href.Contains("runtime") &&
+                        !href.Contains("rc") &&
+                        !href.Contains("preview"))
+                    .ToList();
+
+                // reverse version number ordering -> the actual is on top
+                downLoads.Sort();
+                downLoads.Reverse();
+
+                for (var i = 0; i < downLoads.Count; i++)
+                {
+                    // build complete download uri
+                    downLoads[i] = $"{BaseUri}{downLoads[i]}";
+                }
+
+                allDownLoads.AddRange(downLoads);
             }
 
-            return downLoads;
+            return allDownLoads;
         }
 
         /// <summary>
         /// Read actual download partial uri for .NET version and bitness
         /// </summary>
         /// <param name="version">Search for this .NET version</param>
-        /// <param name="architecture">Search for this architecture/bitness</param>
+        /// <param name="architectures">Search for this architectures/bitness</param>
         /// <returns>Partial version download uri</returns>
-        public async Task<string> ReadActualDownloadPageAsync(Version version, SdkArchitecture architecture)
+        public async Task<string> ReadActualDownloadPageAsync(Version version, SdkArchitecture[] architectures)
         {
-            var pages =  await ReadDownloadPagesAsync(version, architecture);
+            var pages =  await ReadDownloadPagesAsync(version, architectures);
 
             return pages.First();
         }
@@ -126,11 +133,11 @@ namespace VersionsFeedService.VersionParser
         /// </summary>
         /// <param name="version">Search for this .NET version</param>
         /// <param name="specificVersion">Search for this .NET SDK version</param>
-        /// <param name="architecture">Search for this architecture/bitness</param>
+        /// <param name="architectures">Search for this architectures/bitness</param>
         /// <returns>Partial version download uri</returns>
-        public async Task<string> ReadDownloadPageForVersionAsync(Version version, string specificVersion, SdkArchitecture architecture)
+        public async Task<string> ReadDownloadPageForVersionAsync(Version version, string specificVersion, SdkArchitecture[] architectures)
         {
-            var pages = await ReadDownloadPagesAsync(version, architecture);
+            var pages = await ReadDownloadPagesAsync(version, architectures);
 
             return pages.First(x => x.Contains(specificVersion));
         }

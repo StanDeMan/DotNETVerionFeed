@@ -74,7 +74,7 @@ namespace VersionsFeedService
                 var scrapeHtml = new HtmlPage();
 
                 var downloadPageLinks = await Task.WhenAll(_cachedSdkScrapingCatalog.Sdks.Select(sdk =>
-                    Task.Run(() => scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Family))));
+                    Task.Run(() => scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Families))));
 
                 var rawLinkCatalog = Array.Empty<(string downLoadLink, string checkSum)>();
 

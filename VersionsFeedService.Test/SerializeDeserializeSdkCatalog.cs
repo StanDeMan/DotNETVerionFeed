@@ -13,7 +13,7 @@ namespace VersionsFeedService.Test
             Console.WriteLine();
             Console.WriteLine("Sdk scraping preset part:");
 
-            var sdkPresets = new List<SdkScraperPreset>
+            var sdkCatalog = new List<SdkScraper>
             {
                 new()
                 {
@@ -36,7 +36,7 @@ namespace VersionsFeedService.Test
             {
                 Culture = "en-Us",
                 MicrosoftBaseUri = "https://dotnet.microsoft.com",
-                SdksPresets = sdkPresets
+                Sdks = sdkCatalog
             };
 
             // serialize to json
@@ -56,7 +56,8 @@ namespace VersionsFeedService.Test
 
             foreach (var sdk in sdks)
             {
-                Console.WriteLine($"Sdk: {sdk.Family}, Version: {sdk.Version}");
+                Console.WriteLine($"Sdk: {sdk.Families[0]}, Version: {sdk.Version}");
+                Console.WriteLine($"Sdk: {sdk.Families[1]}, Version: {sdk.Version}");
             }
 
             var path = AppDomain.CurrentDomain.BaseDirectory;
