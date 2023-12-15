@@ -30,7 +30,6 @@ namespace VersionsFeedService.VersionParser
         public HtmlPage()
         {
             Web = new HtmlWeb();
-
             DotNetUri= $"{BaseUri}/{CultureInfo.Name}/{DownloadUri}";
         }
 
@@ -66,7 +65,7 @@ namespace VersionsFeedService.VersionParser
         /// Read download .NET versions at given page
         /// </summary>
         /// <param name="version">Search for this .NET version</param>
-        /// <param name="architectures">Search for this architectures/bitness</param>
+        /// <param name="architectures">Search for this architectures/bitness families</param>
         /// <returns>List of partially version download uris</returns>
         public async Task<List<string>> ReadDownloadPagesAsync(Version version, SdkArchitecture[] architectures)
         {
@@ -119,7 +118,7 @@ namespace VersionsFeedService.VersionParser
         /// Read actual download partial uri for .NET version and bitness
         /// </summary>
         /// <param name="version">Search for this .NET version</param>
-        /// <param name="architectures">Search for this architectures/bitness</param>
+        /// <param name="architectures">Search for this architectures/bitness families</param>
         /// <returns>Partial version download uri</returns>
         public async Task<string> ReadActualDownloadPageAsync(Version version, SdkArchitecture[] architectures)
         {
@@ -133,7 +132,7 @@ namespace VersionsFeedService.VersionParser
         /// </summary>
         /// <param name="version">Search for this .NET version</param>
         /// <param name="specificVersion">Search for this .NET SDK version</param>
-        /// <param name="architectures">Search for this architectures/bitness</param>
+        /// <param name="architectures">Search for this architectures/bitness families</param>
         /// <returns>Partial version download uri</returns>
         public async Task<string> ReadDownloadPageForVersionAsync(Version version, string specificVersion, SdkArchitecture[] architectures)
         {
