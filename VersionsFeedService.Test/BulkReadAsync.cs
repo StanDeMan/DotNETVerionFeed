@@ -15,8 +15,6 @@ namespace VersionsFeedService.Test
         [TestMethod]
         public async Task BulkReadTestAsync()
         {
-            var scrapeHtml = new HtmlPage();
-
             await using var catalogStream = Assembly
                 .GetExecutingAssembly()
                 .GetManifestResourceStream("VersionsFeedService.Test.sdk-parser-catalog.json") 
@@ -34,15 +32,16 @@ namespace VersionsFeedService.Test
 
             Assert.AreNotEqual(null, _sdkScrapingCatalog?.Sdks);
 
-            var downloadPageLinks = await Task.WhenAll(_sdkScrapingCatalog!.Sdks.Select(sdk => Task.Run(() => 
-                scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Families))));
-
+            var scrapeHtml = new HtmlPage();
             var rawLinkCatalog = Array.Empty<(string downLoadLink, string checkSum)>();
 
             // test retry logic
             await new Retry<ArgumentNullException>().Policy.ExecuteAsync(async () =>
             {
-                rawLinkCatalog = await HtmlPage.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
+                var downloadPageLinks = await Task.WhenAll(_sdkScrapingCatalog!.Sdks.Select(sdk => Task.Run(() =>
+                    scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Families))));
+
+                rawLinkCatalog = await scrapeHtml.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
             });
 
             Assert.AreNotEqual(null, rawLinkCatalog);
