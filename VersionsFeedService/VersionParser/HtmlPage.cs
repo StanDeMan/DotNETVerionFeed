@@ -88,11 +88,7 @@ namespace VersionsFeedService.VersionParser
                     .Select(row =>
                         row.GetAttributeValue("href", string.Empty))
                     .Where(href =>
-                        !href.Contains("alpine") &&
-                        !href.Contains("x32") &&
-                        !href.Contains("x64") &&
-                        !href.Contains("macos") &&
-                        !href.Contains("windows") &&
+                        href.Contains($"linux-{sdk!.ToLower()}-binaries") &&
                         !href.Contains("runtime") &&
                         !href.Contains("rc") &&
                         !href.Contains("preview"))
