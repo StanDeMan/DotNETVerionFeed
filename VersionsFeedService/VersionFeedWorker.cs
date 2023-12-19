@@ -71,11 +71,12 @@ namespace VersionsFeedService
 
                 if (_cachedSdkScrapingCatalog?.Sdks == null) throw new ApplicationException();
 
-                var scrapeHtml = new HtmlPage();
                 var rawLinkCatalog = Array.Empty<(string downLoadLink, string checkSum)>();
 
                 await new Retry<ArgumentNullException>().Policy.ExecuteAsync(async () =>
                 {
+                    var scrapeHtml = new HtmlPage();
+
                     var downloadPageLinks = await Task.WhenAll(_cachedSdkScrapingCatalog.Sdks.Select(sdk =>
                         Task.Run(() => scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Families))));
 

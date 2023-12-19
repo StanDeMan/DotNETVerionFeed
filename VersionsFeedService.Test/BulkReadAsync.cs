@@ -32,12 +32,13 @@ namespace VersionsFeedService.Test
 
             Assert.AreNotEqual(null, _sdkScrapingCatalog?.Sdks);
 
-            var scrapeHtml = new HtmlPage();
             var rawLinkCatalog = Array.Empty<(string downLoadLink, string checkSum)>();
 
             // test retry logic
             await new Retry<ArgumentNullException>().Policy.ExecuteAsync(async () =>
             {
+                var scrapeHtml = new HtmlPage();
+
                 var downloadPageLinks = await Task.WhenAll(_sdkScrapingCatalog!.Sdks.Select(sdk => Task.Run(() =>
                     scrapeHtml.ReadDownloadPagesAsync(sdk.Version, sdk.Families))));
 
