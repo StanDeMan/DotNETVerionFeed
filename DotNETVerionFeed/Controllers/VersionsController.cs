@@ -21,6 +21,7 @@ namespace DotNETVersionFeed.Controllers
             _cache = cache;
             _logger = logger;
         }
+
         [HttpGet]
         [Route("Read/Versions")]
         public SdkCatalog? Get()
