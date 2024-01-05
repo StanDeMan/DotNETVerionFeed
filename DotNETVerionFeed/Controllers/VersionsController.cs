@@ -6,21 +6,13 @@ namespace DotNETVersionFeed.Controllers
 {
     [ApiController]
     [Route("DotNetVersionFeed")]
-    public class VersionsController : Controller
+    public class VersionsController(
+        IMemoryCache cache,
+        ILogger<VersionsController> logger) : Controller
     {
         private const string SdkCatalogKey = "SdkCatalogKey";
-
-        private readonly ILogger<VersionsController> _logger;
-
-        private readonly IMemoryCache _cache;
-
-        public VersionsController(
-            IMemoryCache cache,
-            ILogger<VersionsController> logger)
-        {
-            _cache = cache;
-            _logger = logger;
-        }
+        private readonly ILogger<VersionsController> _logger = logger;
+        private readonly IMemoryCache _cache = cache;
 
         [HttpGet]
         [Route("Read/Versions")]
