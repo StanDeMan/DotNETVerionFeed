@@ -5,7 +5,7 @@ using VersionsFeedService.VersionParser.Sdk;
 namespace DotNETVersionFeed.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("DotNetVersionFeed")]
     public class VersionsController : Controller
     {
         private const string SdkCatalogKey = "SdkCatalogKey";
@@ -21,8 +21,8 @@ namespace DotNETVersionFeed.Controllers
             _cache = cache;
             _logger = logger;
         }
-
-        [HttpGet(Name = "Versions")]
+        [HttpGet]
+        [Route("Read/Versions")]
         public SdkCatalog? Get()
         {
             try
