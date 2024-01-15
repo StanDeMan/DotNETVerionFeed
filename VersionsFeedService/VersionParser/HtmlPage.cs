@@ -41,7 +41,7 @@ namespace VersionsFeedService.VersionParser
             Web = new HtmlWeb();
 
             BaseUri = baseUri;
-            DotNetUri= $"{BaseUri}/{CultureInfo.Name}/download/dotnet";
+            DotNetUri= $"{BaseUri}/{CultureInfo.Name}/{DownloadUri}";
         }
 
         /// <summary>
