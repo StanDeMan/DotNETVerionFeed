@@ -9,7 +9,7 @@ namespace VersionsFeedService.Test
         [TestMethod]
         public async Task ReadVersionFeedServiceAsync()
         {
-            const string uri = @"https://dotnetversionfeed.azurewebsites.net/versions";
+            const string uri = @"https://services.gingermintsoft.com/DotNetVersionFeed/Read/Versions";
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
