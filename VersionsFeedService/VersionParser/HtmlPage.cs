@@ -19,7 +19,7 @@ namespace VersionsFeedService.VersionParser
 
         public string BaseUri { get; set; } = "https://dotnet.microsoft.com";
 
-        public string? VersionsFeedUri { get; } = "https://dotnetversionfeed.azurewebsites.net/versions";
+        public string? VersionsFeedUri { get; } = "https://services.gingermintsoft.com/DotNetVersionFeed/Read/Versions";
 
         public string DownloadUri { get; } = "download/dotnet";
 
