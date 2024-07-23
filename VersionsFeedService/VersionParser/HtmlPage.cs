@@ -85,6 +85,7 @@ namespace VersionsFeedService.VersionParser
                 // Filter only for Linux .NET released SDKs
                 var downLoads = htmlPage.DocumentNode
                     .SelectNodes($"//a[contains(text(), '{sdk}')]")
+                    .Distinct()
                     .Select(row =>
                         row.GetAttributeValue("href", string.Empty))
                     .Where(href =>
