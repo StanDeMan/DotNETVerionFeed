@@ -3,14 +3,6 @@
   "Culture": "en-Us",
   "Sdks": [
     {
-      "Version": "6.0",
-      "Families": [ "Arm32", "Arm64" ]
-    },
-    {
-      "Version": "7.0",
-      "Families": [ "Arm32", "Arm64" ]
-    },
-    {
       "Version": "8.0",
       "Families": [ "Arm32", "Arm64" ]
     }

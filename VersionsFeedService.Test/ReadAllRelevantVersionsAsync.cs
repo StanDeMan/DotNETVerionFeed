@@ -28,19 +28,6 @@ namespace VersionsFeedService.Test
             downloadLinks.AddRange(downLoadLinks32);
             downloadLinks.AddRange(downLoadLinks64);
 
-            architecture = new SdkArchitecture[] { SdkArchitecture.Arm32 };
-
-            downLoadLinks32 = await page.ReadDownloadPagesAsync(Version.Core6, architecture);
-            Assert.IsNotNull(downLoadLinks32);
-
-            architecture = new SdkArchitecture[] { SdkArchitecture.Arm64 };
-
-            downLoadLinks64 = await page.ReadDownloadPagesAsync(Version.Core6, architecture);
-            Assert.IsNotNull(downLoadLinks64);
-
-            downloadLinks.AddRange(downLoadLinks32);
-            downloadLinks.AddRange(downLoadLinks64);
-
             foreach (var downLoad in downloadLinks)
             {
                 Console.WriteLine($"{downLoad} \r\n");

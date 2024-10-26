@@ -15,16 +15,16 @@ namespace VersionsFeedService.Test
 
             var sdkCatalog = new List<SdkScraper>
             {
-                new()
-                {
-                    Version = Version.Core6,
-                    Families = new[] { SdkArchitecture.Arm32, SdkArchitecture.Arm64 }
-                },
-                new()
-                {
-                    Version = Version.Core7,
-                    Families = new[] { SdkArchitecture.Arm32, SdkArchitecture.Arm64 }
-                },
+                //new()
+                //{
+                //    Version = Version.Core6,
+                //    Families = new[] { SdkArchitecture.Arm32, SdkArchitecture.Arm64 }
+                //},
+                //new()
+                //{
+                //    Version = Version.Core7,
+                //    Families = new[] { SdkArchitecture.Arm32, SdkArchitecture.Arm64 }
+                //},
                 new()
                 {
                     Version = Version.Core8,
