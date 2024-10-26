@@ -15,6 +15,7 @@ namespace VersionsFeedService.Test
 
             var sdkCatalog = new List<SdkScraper>
             {
+                // code smell: remove later soon...
                 //new()
                 //{
                 //    Version = Version.Core6,
