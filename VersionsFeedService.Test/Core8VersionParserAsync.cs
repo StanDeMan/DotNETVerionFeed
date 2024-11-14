@@ -13,7 +13,7 @@ namespace VersionsFeedService.Test
             var page = new HtmlPage();
             Assert.IsNotNull(page);
 
-            var architecture = new SdkArchitecture[] { SdkArchitecture.Arm64 };
+            var architecture = new[] { SdkArchitecture.Arm64 };
 
             var downLoads = await page.ReadDownloadPagesAsync(Version.Core8, architecture);
             Assert.IsNotNull(downLoads);
@@ -30,7 +30,7 @@ namespace VersionsFeedService.Test
             var page = new HtmlPage();
             Assert.IsNotNull(page);
 
-            var architecture = new SdkArchitecture[] { SdkArchitecture.Arm32 };
+            var architecture = new[] { SdkArchitecture.Arm32 };
 
             var downLoads = await page.ReadDownloadPagesAsync(Version.Core8, architecture);
             Assert.IsNotNull(downLoads);
@@ -47,14 +47,14 @@ namespace VersionsFeedService.Test
             var page = new HtmlPage();
             Assert.IsNotNull(page);
 
-            var architecture = new SdkArchitecture[] { SdkArchitecture.Arm64 };
+            var architecture = new[] { SdkArchitecture.Arm64 };
 
             var downLoad = await page.ReadActualDownloadPageAsync(Version.Core8, architecture);
             Assert.IsNotNull(downLoad);
 
             Console.WriteLine($"{downLoad} \r\n");
 
-            architecture = new SdkArchitecture[] { SdkArchitecture.Arm32 };
+            architecture = new[] { SdkArchitecture.Arm32 };
 
             downLoad = await page.ReadActualDownloadPageAsync(Version.Core8, architecture);
             Assert.IsNotNull(downLoad);
@@ -68,14 +68,14 @@ namespace VersionsFeedService.Test
             var page = new HtmlPage();
             Assert.IsNotNull(page);
 
-            var architecture = new SdkArchitecture[] { SdkArchitecture.Arm32 };
+            var architecture = new[] { SdkArchitecture.Arm32 };
 
             var downLoad = await page.ReadDownloadPageForVersionAsync(Version.Core8, "8.0.100", architecture);
             Assert.IsNotNull(downLoad);
 
             Console.WriteLine($"{downLoad} \r\n");
 
-            architecture = new SdkArchitecture[] { SdkArchitecture.Arm64 };
+            architecture = new[] { SdkArchitecture.Arm64 };
 
             downLoad = await page.ReadDownloadPageForVersionAsync(Version.Core8, "8.0.100", architecture);
             Assert.IsNotNull(downLoad);
