@@ -17,15 +17,15 @@ namespace VersionsFeedService.VersionParser
 
         private string PageUri { get; set; } = string.Empty;
 
-        public string BaseUri { get; set; } = "https://dotnet.microsoft.com";
+        private string BaseUri { get; set; } = "https://dotnet.microsoft.com";
 
         public string? VersionsFeedUri { get; } = "https://services.gingermintsoft.com/DotNetVersionFeed/Read/Versions";
 
-        public string DownloadUri { get; } = "download/dotnet";
+        private string DownloadUri { get; } = "download/dotnet";
 
-        public string DotNetUri { get; }
+        private string DotNetUri { get; }
 
-        public CultureInfo CultureInfo { get; set; } = CultureInfo.CreateSpecificCulture("en-us");
+        private CultureInfo CultureInfo { get; set; } = CultureInfo.CreateSpecificCulture("en-us");
 
         public HtmlPage()
         {
