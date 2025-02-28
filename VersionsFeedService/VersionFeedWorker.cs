@@ -95,7 +95,9 @@ namespace VersionsFeedService
             }
             catch (Exception e)
             {
-                _logger.LogError($"VersionFeedWorker.UpdateVersions error: {e}. Scope: {scope}");
+                _logger.LogError($"VersionFeedWorker.UpdateVersions error: {e}." + 
+                                 Environment.NewLine + 
+                                 $"Scope: {scope}");
             }
         }
 
@@ -105,26 +107,37 @@ namespace VersionsFeedService
         /// -> than no need to load again...
         /// </summary>
         /// <param name="rawLinkCatalog">Raw catalog data: (link, checkSum)</param>
-        private static bool FillCachedSdkCatalog(IEnumerable<(string, string)> rawLinkCatalog)
-        {
-            _cachedSdkCatalog = new SdkCatalog();                                       // reset entries
+        private bool FillCachedSdkCatalog(IEnumerable<(string, string)> rawLinkCatalog) 
+        { 
+            _cachedSdkCatalog = new SdkCatalog();                                           // reset entries 
 
-            foreach (var (downLoadLink, checkSum) in rawLinkCatalog)
-            {
-                var dotNetPart = downLoadLink.Split('/')[7].Split('-');                 // read .NET part from download uri
+            foreach (var (downLoadLink, checkSum) in rawLinkCatalog) 
+            { 
+                try 
+                { 
+                    // take the last .NET part of the uri and split it by '-' 
+                    var dotNetPart = downLoadLink[(downLoadLink.LastIndexOf('/') + 1)..]    // take the last part of uri - after last '/' 
+                        .Split('-');                                                        // get .NET version information 
 
-                // extract items and fill cached catalog with new entries
-                _cachedSdkCatalog?.Items.Add(new SdkCatalogItem(
-                    $"{dotNetPart[2].Split('.')[0]}.{dotNetPart[2].Split('.')[1]}",     // SDK version
-                    $"{dotNetPart[2]}",                                                 // SDK release number
-                    dotNetPart[4].Contains(Platform.Bitness64.ToMemberString())         // read SDK architecture    
-                        ? SdkArchitecture.Arm64.ToMemberString()                                                     
-                        : SdkArchitecture.Arm32.ToMemberString(),
-                    downLoadLink,
-                    checkSum));
-            }
+                    // extract items and fill cached catalog with new entries 
+                    _cachedSdkCatalog?.Items.Add(new SdkCatalogItem( 
+                        $"{dotNetPart[2].Split('.')[0]}.{dotNetPart[2].Split('.')[1]}",     // SDK version 
+                        $"{dotNetPart[2]}",                                                 // SDK release number 
+                        dotNetPart[4].Contains(Platform.Bitness64.ToMemberString())         // read SDK architecture     
+                            ? SdkArchitecture.Arm64.ToMemberString() 
+                            : SdkArchitecture.Arm32.ToMemberString(), 
+                        downLoadLink, 
+                        checkSum)); 
+                } 
+                catch (Exception e) 
+                { 
+                    _logger.LogError($"VersionFeedWorker.FillCachedSdkCatalog: {e}." + 
+                                     Environment.NewLine + 
+                                     $"Cannot parse path: {downLoadLink}."); 
+                } 
+            } 
 
-            return _cachedSdkCatalog != null && _cachedSdkCatalog.Items.Any();
+            return _cachedSdkCatalog != null && _cachedSdkCatalog.Items.Any(); 
         }
     }
 }
