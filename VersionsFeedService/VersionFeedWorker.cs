@@ -39,6 +39,11 @@ namespace VersionsFeedService
                 .SetAbsoluteExpiration(TimeSpan.FromDays(2)));
         }
 
+        /// <summary>
+        /// Execute this worker
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Task</returns>
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
@@ -50,6 +55,11 @@ namespace VersionsFeedService
             }
         }
 
+        /// <summary>
+        /// Collect the SDK versions from release pages
+        /// </summary>
+        /// <returns>Task</returns>
+        /// <exception cref="ApplicationException"></exception>
         private async Task UpdateVersions()
         {
             using var scope = _serviceProvider.CreateScope();
@@ -115,7 +125,7 @@ namespace VersionsFeedService
             { 
                 try 
                 { 
-                    // take the last .NET part of the uri and split it by '-' 
+                    // take the last .NET part of the uri and split it by - 
                     var dotNetPart = downLoadLink[(downLoadLink.LastIndexOf('/') + 1)..]    // take the last part of uri - after last '/' 
                         .Split('-');                                                        // get .NET version information 
 
