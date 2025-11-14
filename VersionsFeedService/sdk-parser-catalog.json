@@ -9,6 +9,10 @@
     {
       "Version": "9.0",
       "Families": [ "Arm32", "Arm64" ]
+    },
+    {
+      "Version": "10.0",
+      "Families": [ "Arm32", "Arm64" ]
     }
   ]
 }

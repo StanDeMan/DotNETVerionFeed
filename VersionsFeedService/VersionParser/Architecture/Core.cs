@@ -14,6 +14,12 @@ namespace VersionsFeedService.VersionParser.Architecture
         /// 9.0 version
         /// </summary>
         [EnumMember(Value = "9.0")] 
-        Core9
+        Core9,
+
+        /// <summary>
+        /// 10.0 version
+        /// </summary>
+        [EnumMember(Value = "10.0")]
+        Core10
     }
 }
