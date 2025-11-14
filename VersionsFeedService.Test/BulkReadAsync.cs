@@ -20,7 +20,7 @@ namespace VersionsFeedService.Test
                 .GetManifestResourceStream("VersionsFeedService.Test.sdk-parser-catalog.json") 
                     ?? throw new ApplicationException();
 
-            Assert.AreNotEqual(null, catalogStream);
+            Assert.IsNotNull(catalogStream);
 
             var jsonSerializerSettings = new JsonSerializerSettings();
             jsonSerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
@@ -30,7 +30,7 @@ namespace VersionsFeedService.Test
                     await new StreamReader(catalogStream).ReadToEndAsync(),
                     jsonSerializerSettings);
 
-            Assert.AreNotEqual(null, _sdkScrapingCatalog?.Sdks);
+            Assert.IsNotNull(_sdkScrapingCatalog?.Sdks);
 
             var rawLinkCatalog = Array.Empty<(string downLoadLink, string checkSum)>();
 
@@ -45,7 +45,7 @@ namespace VersionsFeedService.Test
                 rawLinkCatalog = await scrapeHtml.ReadDownloadUriAndChecksumBulkAsync(downloadPageLinks);
             });
 
-            Assert.AreNotEqual(null, rawLinkCatalog);
+            Assert.IsNotNull(rawLinkCatalog);
 
             foreach (var (downLoadLink, checkSum) in rawLinkCatalog)
             {
